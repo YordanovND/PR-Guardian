@@ -6,3 +6,8 @@ spring:
         model: qwen2.5-coder:3b
   application:
     name: gitinsight.ai
+
+integration:
+  github:
+    base-url: https://api.github.com
+    token: ${GITHUB_TOKEN:}
