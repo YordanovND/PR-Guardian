@@ -12,7 +12,7 @@ public class GitHubRestClient extends BaseApiClient {
     public GitHubRestClient(BaseApiClientFactory factory, GitHubProperties properties) {
         super(factory.create(
                 properties.baseUrl(),
-                properties.token(),
+                null,
                 Map.of("Accept", "application/vnd.github+json")
         ));
     }

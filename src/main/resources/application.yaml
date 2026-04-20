@@ -10,4 +10,3 @@ spring:
 integration:
   github:
     base-url: https://api.github.com
-    token: ${GITHUB_TOKEN:}
