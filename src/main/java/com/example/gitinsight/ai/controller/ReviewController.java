@@ -25,4 +25,11 @@ public class ReviewController {
 
         return "Hello World!";
     }
+
+    @GetMapping(path = "/test")
+    public String getTesting() {
+        // service.getReviewableFiles();
+
+        return "Hello World!";
+    }
 }
