@@ -4,6 +4,7 @@ import com.example.gitinsight.ai.client.VisualControlsProviderClient;
 import com.example.gitinsight.ai.model.*;
 import com.example.gitinsight.ai.resolver.VisualControlsProviderResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.Map;
 public class PullRequestService {
 
     private final VisualControlsProviderResolver providerResolver;
+
+    @Autowired
     private final RuleEngine ruleEngine;
 
     public PullRequestReviewResponse reviewPullRequest(String pullRequestUrl) {

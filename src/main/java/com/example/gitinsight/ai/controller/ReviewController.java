@@ -18,6 +18,20 @@ public class ReviewController {
 
     @GetMapping
     public PullRequestReviewResponse getReview(@RequestParam String url) {
-        return service.reviewPullRequest(url);
+        PullRequestReviewResponse requestReviewResponse;
+        try {
+          requestReviewResponse = service.reviewPullRequest(url);
+        } catch (Exception e) {
+           throw new IllegalArgumentException("");
+        }
+
+        return requestReviewResponse;
+    }
+
+    @GetMapping(path = "/test")
+    public String getTesting() {
+        // service.getReviewableFiles();
+
+        return "Hello World!";
     }
 }
