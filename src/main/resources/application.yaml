@@ -1,11 +1,13 @@
 spring:
+  application:
+    name: gitinsight.ai
   ai:
     ollama:
       base-url: http://ollama:11434
       chat:
         model: qwen2.5-coder:3b
-  application:
-    name: gitinsight.ai
+  main:
+    lazy-initialization: true
 
 integration:
   github:

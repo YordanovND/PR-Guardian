@@ -9,11 +9,6 @@ services:
       - "8080:8080"
     depends_on:
       - ollama
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gitinsight
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
 
   ollama:
     image: ollama/ollama
@@ -29,18 +24,5 @@ services:
       interval: 10s
       retries: 5
 
-  db:
-    image: postgres:15
-    container_name: postgres
-    environment:
-      POSTGRES_DB: gitinsight
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-
 volumes:
   ollama-data:
-  pg-data:

@@ -1,232 +1,193 @@
 # 🚀 GitInsight AI
 
-AI-powered code review assistant for Java/Spring projects.
-Analyzes GitHub Merge Requests (Pull Requests), inspects diffs, and generates structured review reports using a hybrid approach (rule-based checks + local LLM).
+AI-powered code review tool for pull requests (PRs), built with **Java + Spring Boot**.
 
----
-
-## 🧠 Idea
-
-GitInsight AI is a backend service that performs automated code reviews on GitHub repositories.
-
-Instead of reviewing entire repositories, the system focuses on **Merge Request (PR) diffs**, just like real developers do.
-
-It:
-
-* fetches changes from a GitHub PR
-* analyzes modified files
-* runs rule-based checks
-* sends diffs to a local AI model (Ollama)
-* returns structured review results (issues, suggestions, score)
+The application analyzes GitHub PRs, extracts code diffs, runs a **rule-based engine**, and prepares structured data ready for AI-based review and frontend visualization.
 
 ---
 
 ## ✨ Features
 
-### 🔍 PR / Merge Request Review
+* 🔍 Analyze **public GitHub pull requests**
+* 🧠 Extract and process **code diffs**
+* ⚙️ Built-in **Rule Engine** for deterministic checks
+* 📦 Clean, structured API response (UI-ready)
+* 🔌 Easily extendable for new providers (GitLab, Bitbucket, etc.)
+* 🤖 Ready for AI integration (Ollama / LLMs)
 
-* Input: GitHub PR URL
-* Fetches changed files and diffs
-* Filters relevant files (`.java`, `.yml`, etc.)
+---
 
-### 🤖 AI Code Review (Ollama)
+## ⚠️ Current Limitations
 
-* Uses local LLM (no paid API)
-* Generates:
+* Works only with **public repositories**
+* Supports **Java code only** (for rule evaluation)
+* GitHub is the only provider implemented (for now)
 
-    * bug risks
-    * code smells
-    * security concerns
-    * refactoring suggestions
+---
 
-### ⚙️ Rule-based Static Checks
+## 🏗️ Architecture Overview
 
-* Detects common issues:
+```
+PR URL → Provider Resolver → GitHub Client → Changed Files
+        → Rule Engine → Findings → Aggregated Review Response
+```
 
-    * long methods/classes
-    * nested logic
-    * missing null checks
-    * generic exception handling
-    * Spring anti-patterns
+---
 
-### 🧩 Hybrid Review Pipeline
+## Quick Test
 
-Combines:
+You can test the application with this public GitHub PR:
 
-* deterministic rule checks
-* AI-generated insights
+```text
+https://github.com/YordanovND/GitInsight-AI/pull/1/changes
+```
 
-### 📊 Structured Output
+Example request:
 
-Returns clean JSON:
+```bash
+curl -X 'GET' \
+  'http://localhost:8080/api/reviews?url=https%3A%2F%2Fgithub.com%2FYordanovND%2FGitInsight-AI%2Fpull%2F1%2Fchanges' \
+  -H 'accept: */*'
+```
 
-```json
-{
-  "score": 75,
-  "summary": "...",
-  "issues": [...],
-  "suggestions": [...]
+## 🔌 Provider Extensibility
+
+Adding a new provider is straightforward:
+
+1. Implement:
+
+```java
+VisualControlsProviderClient
+```
+
+2. Add support logic:
+
+```java
+boolean supports(String url)
+```
+
+3. Register it as a Spring bean (`@Component`)
+
+That’s it — it will be auto-discovered and used via the resolver.
+
+---
+
+## ⚙️ Rule Engine
+
+The rule engine performs deterministic checks on code changes.
+
+### How it works
+
+* Each file is passed through a list of rules
+* Each rule returns findings (if any)
+* Results are aggregated into a structured response
+
+---
+
+### Adding a new rule
+
+1. Implement the `ReviewRule` interface:
+
+```java
+@Component
+public class MyCustomRule implements ReviewRule {
+
+    @Override
+    public String getName() {
+        return "MY_RULE";
+    }
+
+    @Override
+    public boolean supports(RuleContext context) {
+        return context.changedFile().filename().endsWith(".java");
+    }
+
+    @Override
+    public List<RuleFinding> evaluate(RuleContext context) {
+        // your logic here
+        return List.of();
+    }
 }
 ```
 
-### 🐳 Fully Dockerized
-
-* Spring Boot backend
-* Ollama (AI model)
-* PostgreSQL database
+2. Done ✅
+   Spring will automatically pick it up and include it in the engine.
 
 ---
 
-## 🏗️ Tech Stack
+### Example Rules
 
-* Java 21
-* Spring Boot
-* Spring AI (Ollama)
-* PostgreSQL
-* Docker + Docker Compose
-* OpenAPI (Swagger)
+* `System.out.println` usage
+* Generic exception catch (`catch (Exception e)`)
+* Spring field injection (`@Autowired`)
 
 ---
 
-## 🚀 Getting Started
+## ▶️ Running the Project
 
-### 1. Prerequisites
-
-* Docker Desktop
-* Git
-
----
-
-### 2. Clone the repository
-
-```bash
-git clone https://github.com/your-username/gitinsight-ai.git
-cd gitinsight-ai
-```
-
----
-
-### 3. Run the project
-
-```bash
-docker compose up --build
-```
-
-👉 This will:
-
-* build the Spring app
-* start PostgreSQL
-* start Ollama
-* download the AI model automatically
-
----
-
-### 4. Access the application
-
-* API:
-  http://localhost:8080
-
-* Swagger UI:
-  http://localhost:8080/swagger-ui/index.html
-
----
-
-## 📡 Example Endpoint
-
-```http
-GET /review
-```
-
-(Simple test endpoint for now)
-
----
-
-## 🧪 Planned Endpoint (PR Review)
-
-```http
-POST /api/reviews/pr
-```
-
-### Request:
-
-```json
-{
-  "repoUrl": "https://github.com/user/project",
-  "prNumber": 42
-}
-```
-
-### Flow:
-
-1. Fetch PR diff via GitHub API
-2. Extract changed files
-3. Run rule-based checks
-4. Send diff to AI
-5. Return structured review
-
----
-
-## ⚙️ Local Development
-
-### Useful commands
-
-Using Docker:
-
-```bash
-docker compose up --build
-docker compose down
-docker compose logs -f
-```
-
-Using Makefile (if installed):
+### With Docker (recommended)
 
 ```bash
 make build
-make logs
-make down
+```
+
+or
+
+```bash
+docker compose up --build
 ```
 
 ---
 
-## 🧠 Architecture Overview
+## 🌐 API Usage
 
+### Get review for a PR
+
+```http
+GET /api/reviews?url=<pull_request_url>
 ```
-GitHub PR → Diff Parser → Rule Engine → AI Service → Review Aggregator → Response
+
+### Example:
+
+```text
+http://localhost:8080/api/reviews?url=https://github.com/user/repo/pull/1
 ```
 
 ---
 
-## 📌 Notes
+## 📊 Response
 
-* AI runs locally via Ollama → no API costs
-* Designed to be modular (can plug different LLM providers)
-* Focused on backend (no frontend yet)
+The API returns:
 
----
+* Summary (score, verdict)
+* Findings grouped by severity
+* Per-file analysis
 
-## 🛠️ Roadmap
-
-* [ ] PR diff parsing service
-* [ ] GitHub API integration
-* [ ] AI structured output validation
-* [ ] Review history (DB)
-* [ ] Authentication (JWT)
-* [ ] Frontend dashboard
-* [ ] AWS / cloud deployment
+Designed to be directly consumed by a frontend.
 
 ---
 
-## 📄 License
+## 🧠 Future Improvements
 
-MIT
+* AI-generated code review (LLM integration)
+* Inline GitHub comments publishing
+* GitHub App authentication
+* Support for GitLab / Bitbucket
+* Multi-language support
 
 ---
 
-## 👨‍💻 Author
+## 💡 Why this project?
 
-Built as a portfolio project to demonstrate:
+This project demonstrates:
 
-* backend architecture
-* AI integration
-* Docker-based development
-* real-world engineering patterns
+* Clean architecture & extensibility
+* Integration with external APIs (GitHub)
+* Rule-based analysis engine
+* Preparation for AI-powered workflows
+
+---
+
+## 🧑‍💻 Author
+
+Built as a portfolio project to showcase backend + AI integration skills.
