@@ -1,5 +1,6 @@
 package com.example.gitinsight.ai.client;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -9,12 +10,9 @@ import org.springframework.web.client.RestClient;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class BaseApiClientFactory {
     private final RestClient.Builder baseBuilder;
-
-    public BaseApiClientFactory(RestClient.Builder baseBuilder) {
-        this.baseBuilder = baseBuilder;
-    }
 
     public RestClient create(String baseUrl, String bearerToken, Map<String, String> headers) {
         RestClient.Builder builder = baseBuilder
