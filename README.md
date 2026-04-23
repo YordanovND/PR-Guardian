@@ -2,40 +2,48 @@
 
 PR Guardian is a lightweight rule-based pull request review service for GitHub.
 
-It reads changed files from a pull request, runs JSON-defined rules against the diff, and returns a structured review response that can be consumed by a UI or another service.
+It reads changed files from a pull request, runs JSON-defined rules against the diff, and returns a structured review response.
+
+---
 
 ## Features
 
-- Review public GitHub pull requests by URL
-- Rule-based analysis over changed files
-- Rules stored as external JSON files
+- Review GitHub pull requests by URL
+- Rule-based analysis (no AI)
+- Rules defined in external JSON files
 - Language-aware rule selection
-- Structured API response per file and per violation
-- Easy to extend with new rules and providers
+- Structured response per file and per violation
+- Easy to extend with new rules and languages
 
-## Tech Stack
+---
 
-- Java 21
-- Spring Boot
-- Gradle
-- OpenAPI / Swagger UI
+## Live Demo
 
-## How it works
+The application is currently deployed on AWS EC2:
 
-1. A pull request URL is sent to the API
-2. The provider is resolved from the URL
-3. Changed files are fetched from GitHub
-4. The rule engine loads matching rules for the file language
-5. Violations are aggregated into a review response
+Example request:
+
+```bash
+curl "http://<aws-dynamic-ip>:8080/api/reviews?url=https://github.com/YordanovND/PR-Guardian/pull/1"
+```
+
+Note: The service may be temporarily unavailable if the EC2 instance is stopped.
+
+---
 
 ## API
 
-### Get review result
-`GET /api/reviews?url=<pull_request_url>`
+### Endpoint
+
+```
+GET /api/reviews?url=<pull_request_url>
+```
 
 ### Example
-`curl "http://localhost:8080/api/reviews?url=https://github.com/owner/repo/pull/1"`
 
+```bash
+curl "http://localhost:8080/api/reviews?url=https://github.com/owner/repo/pull/1"
+```
 
 ### Example response
 
@@ -46,7 +54,7 @@ It reads changed files from a pull request, runs JSON-defined rules against the 
   "issuesFound": 1,
   "fileResults": [
     {
-      "fileName": "src/main/java/com/example/Demo.java",
+      "fileName": "Example.java",
       "language": "JAVA",
       "violations": [
         {
@@ -54,7 +62,7 @@ It reads changed files from a pull request, runs JSON-defined rules against the 
           "ruleName": "SYSTEM_OUT_PRINTLN",
           "severity": "LOW",
           "type": "CODE_SMELL",
-          "message": "Avoid using System.out.println or System.out.print in application code. Prefer structured logging."
+          "message": "Avoid using System.out.println or System.out.print."
         }
       ]
     }
@@ -62,21 +70,49 @@ It reads changed files from a pull request, runs JSON-defined rules against the 
 }
 ```
 
-### Rules
+---
 
-Rules are defined as JSON files under:
-`src/main/resources/rules/`
+## Rules
 
-Each rule contains metadata such as language, severity, type, message, and matching conditions.
+Rules are defined as JSON files located in:
 
-This makes the engine easy to extend without changing the core review logic.
+```
+src/main/resources/rules/
+```
 
-### Run locally
-`./gradlew bootRun`
+Each rule includes:
+- language
+- severity
+- type
+- message
+- conditions (regex-based)
 
-Or run the main application class directly from your IDE.
+This allows adding new rules without changing the application code.
 
-### Project structure
+---
+
+## How it works
+
+1. A pull request URL is provided
+2. The system resolves the provider (GitHub)
+3. Changed files are fetched
+4. Rules are applied based on file language
+5. Results are returned in a structured format
+
+---
+
+## Run locally
+
+```bash
+./gradlew bootRun
+```
+
+Or run the main application class from your IDE.
+
+---
+
+## Project structure
+
 ```
 src/main/java/com/example/prguardian
 ├── controller
@@ -89,7 +125,27 @@ src/main/resources
 └── rules
 ```
 
-### Notes
-The current implementation is focused on GitHub pull requests
-Review results are based on changed code, not full repository analysis
-New languages and rules can be added incrementally
+---
+
+## Deployment
+
+The service is deployed on AWS EC2 using:
+
+- Amazon Linux instance (t3.micro)
+- Spring Boot executable JAR
+- Open ports (8080) via security groups
+- Note: The service is hosted on AWS and may be restarted periodically.
+
+---
+
+## Notes
+
+- Analysis is based on pull request diffs, not full repository scanning
+- Only public GitHub repositories are supported currently
+- New languages can be added via rules
+
+---
+
+## Author
+
+Nikolay Yordanov
