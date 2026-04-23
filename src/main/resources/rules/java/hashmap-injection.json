@@ -1,0 +1,15 @@
+{
+  "id": "java-hashmap-field-mutable",
+  "name": "MUTABLE_HASHMAP_FIELD",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "MAINTAINABILITY",
+  "message": "Mutable HashMap field detected. Consider exposing interfaces like Map instead of implementations.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\b(private|protected|public)\\s+HashMap<"
+    }
+  ]
+}

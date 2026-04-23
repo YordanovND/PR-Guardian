@@ -1,0 +1,15 @@
+{
+  "id": "java-illegal-state-without-message",
+  "name": "ILLEGAL_STATE_EXCEPTION_WITHOUT_MESSAGE",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "MAINTAINABILITY",
+  "message": "IllegalStateException without a message reduces debuggability.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bthrow\\s+new\\s+IllegalStateException\\s*\\(\\s*\\)"
+    }
+  ]
+}

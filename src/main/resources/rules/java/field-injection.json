@@ -1,0 +1,16 @@
+{
+  "id": "java-field-injection",
+  "name": "FIELD_INJECTION",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "SPRING_ANTI_PATTERN",
+  "scope": "PATCH",
+  "message": "Field injection detected. Prefer constructor injection.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "@Autowired\\s+private"
+    }
+  ]
+}

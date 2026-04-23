@@ -1,0 +1,15 @@
+{
+  "id": "java-print-stack-trace",
+  "name": "PRINT_STACK_TRACE",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "CODE_SMELL",
+  "message": "Avoid using printStackTrace(). Use structured logging instead.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bprintStackTrace\\s*\\("
+    }
+  ]
+}

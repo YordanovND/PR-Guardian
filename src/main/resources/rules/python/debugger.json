@@ -1,0 +1,15 @@
+{
+  "id": "python-debugger",
+  "name": "DEBUGGER_USAGE",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "CODE_SMELL",
+  "message": "Debugger detected (pdb). Remove before committing.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "pdb\\.set_trace\\s*\\("
+    }
+  ]
+}

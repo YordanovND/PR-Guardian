@@ -1,0 +1,15 @@
+{
+  "id": "java-string-double-equals",
+  "name": "STRING_COMPARISON_WITH_DOUBLE_EQUALS",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "BUG_RISK",
+  "message": "String comparison with == detected. Use .equals() instead.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\"[^\"]*\"\\s*==\\s*\\w+|\\w+\\s*==\\s*\"[^\"]*\""
+    }
+  ]
+}

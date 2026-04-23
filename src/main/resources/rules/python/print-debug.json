@@ -1,0 +1,15 @@
+{
+  "id": "python-print-debug",
+  "name": "PRINT_DEBUG",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "CODE_SMELL",
+  "message": "Avoid using print() for debugging. Use proper logging instead.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bprint\\s*\\("
+    }
+  ]
+}

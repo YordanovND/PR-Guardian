@@ -1,0 +1,16 @@
+{
+  "id": "java-generic-exception-catch",
+  "name": "GENERIC_EXCEPTION_CATCH",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "CODE_SMELL",
+  "scope": "PATCH",
+  "message": "Generic exception catch detected. Catch more specific exception types.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "catch\\s*\\(\\s*Exception\\s+\\w+\\s*\\)"
+    }
+  ]
+}

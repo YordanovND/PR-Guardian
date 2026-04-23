@@ -1,0 +1,15 @@
+{
+  "id": "java-runtime-exception",
+  "name": "THROW_RUNTIME_EXCEPTION",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "CODE_SMELL",
+  "message": "Throwing RuntimeException directly can hide intent. Prefer a more specific exception type.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bthrow\\s+new\\s+RuntimeException\\s*\\("
+    }
+  ]
+}

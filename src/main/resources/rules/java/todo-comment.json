@@ -1,0 +1,15 @@
+{
+  "id": "java-todo-comment",
+  "name": "TODO_COMMENT",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "INFO",
+  "message": "TODO or FIXME comment found. Make sure it is addressed before merge.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "//\\s*(TODO|FIXME)|/\\*.*(TODO|FIXME).*\\*/"
+    }
+  ]
+}

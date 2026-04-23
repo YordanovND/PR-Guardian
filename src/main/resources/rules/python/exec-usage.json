@@ -1,0 +1,15 @@
+{
+  "id": "python-exec-usage",
+  "name": "EXEC_USAGE",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "SECURITY",
+  "message": "Avoid using exec(). It can lead to security vulnerabilities.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bexec\\s*\\("
+    }
+  ]
+}

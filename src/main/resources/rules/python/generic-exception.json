@@ -1,0 +1,15 @@
+{
+  "id": "python-generic-exception",
+  "name": "GENERIC_EXCEPTION",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "CODE_SMELL",
+  "message": "Avoid catching generic Exception. Catch specific exceptions.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "except\\s+Exception\\s*(as\\s+\\w+)?\\s*:"
+    }
+  ]
+}

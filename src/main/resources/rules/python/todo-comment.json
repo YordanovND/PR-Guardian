@@ -1,0 +1,15 @@
+{
+  "id": "python-todo-comment",
+  "name": "TODO_COMMENT",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "INFO",
+  "message": "TODO or FIXME comment found. Ensure it's resolved before merge.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "#\\s*(TODO|FIXME)"
+    }
+  ]
+}

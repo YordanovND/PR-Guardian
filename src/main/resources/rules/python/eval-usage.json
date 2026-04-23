@@ -1,0 +1,15 @@
+{
+  "id": "python-eval-usage",
+  "name": "EVAL_USAGE",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "SECURITY",
+  "message": "Avoid using eval(). It can lead to security vulnerabilities.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\beval\\s*\\("
+    }
+  ]
+}

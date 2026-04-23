@@ -1,0 +1,15 @@
+{
+  "id": "java-throws-generic-exception",
+  "name": "THROWS_GENERIC_EXCEPTION",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "CODE_SMELL",
+  "message": "Avoid declaring throws Exception. Prefer specific checked exceptions.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bthrows\\s+Exception\\b"
+    }
+  ]
+}

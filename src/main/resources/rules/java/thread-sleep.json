@@ -1,0 +1,15 @@
+{
+  "id": "java-thread-sleep",
+  "name": "THREAD_SLEEP_USAGE",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "CODE_SMELL",
+  "message": "Thread.sleep() detected. Consider whether waiting logic can be improved.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bThread\\.sleep\\s*\\("
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "java-empty-catch",
+  "name": "EMPTY_CATCH_BLOCK",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "BUG_RISK",
+  "message": "Empty catch block detected. Handle the exception or document why it is ignored.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
+    }
+  ]
+}

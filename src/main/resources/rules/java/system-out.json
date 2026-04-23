@@ -1,0 +1,16 @@
+{
+  "id": "java-system-out",
+  "name": "SYSTEM_OUT_PRINTLN",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "CODE_SMELL",
+  "scope": "PATCH",
+  "message": "Avoid using System.out.println or System.out.print in application code. Prefer structured logging.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "System\\.out\\.(println|print)\\s*\\("
+    }
+  ]
+}

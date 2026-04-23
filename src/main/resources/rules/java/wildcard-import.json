@@ -1,0 +1,15 @@
+{
+  "id": "java-wildcard-import",
+  "name": "WILDCARD_IMPORT",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "LOW",
+  "type": "STYLE",
+  "message": "Wildcard import detected. Prefer explicit imports.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "^import\\s+[^;]*\\.\\*;"
+    }
+  ]
+}

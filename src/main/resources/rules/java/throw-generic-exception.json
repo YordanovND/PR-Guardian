@@ -1,0 +1,15 @@
+{
+  "id": "java-throw-generic-exception",
+  "name": "THROW_GENERIC_EXCEPTION",
+  "language": "JAVA",
+  "enabled": true,
+  "severity": "MEDIUM",
+  "type": "CODE_SMELL",
+  "message": "Avoid throwing generic Exception. Throw a more specific exception type.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "\\bthrow\\s+new\\s+Exception\\s*\\("
+    }
+  ]
+}

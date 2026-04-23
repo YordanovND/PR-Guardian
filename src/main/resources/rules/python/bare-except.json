@@ -1,0 +1,15 @@
+{
+  "id": "python-bare-except",
+  "name": "BARE_EXCEPT",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "BUG_RISK",
+  "message": "Avoid bare except. Always catch specific exceptions.",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "except\\s*:\\s*$"
+    }
+  ]
+}

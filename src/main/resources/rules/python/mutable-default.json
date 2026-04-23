@@ -1,0 +1,15 @@
+{
+  "id": "python-mutable-default",
+  "name": "MUTABLE_DEFAULT_ARGUMENT",
+  "language": "PYTHON",
+  "enabled": true,
+  "severity": "HIGH",
+  "type": "BUG_RISK",
+  "message": "Avoid mutable default arguments (e.g. list, dict).",
+  "conditions": [
+    {
+      "kind": "REGEX",
+      "pattern": "def\\s+\\w+\\s*\\(.*=\\s*(\\[\\]|\\{\\})"
+    }
+  ]
+}
