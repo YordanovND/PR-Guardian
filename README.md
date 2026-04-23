@@ -1,193 +1,95 @@
-# 🚀 GitInsight AI
+# PR Guardian
 
-AI-powered code review tool for pull requests (PRs), built with **Java + Spring Boot**.
+PR Guardian is a lightweight rule-based pull request review service for GitHub.
 
-The application analyzes GitHub PRs, extracts code diffs, runs a **rule-based engine**, and prepares structured data ready for AI-based review and frontend visualization.
+It reads changed files from a pull request, runs JSON-defined rules against the diff, and returns a structured review response that can be consumed by a UI or another service.
 
----
+## Features
 
-## ✨ Features
+- Review public GitHub pull requests by URL
+- Rule-based analysis over changed files
+- Rules stored as external JSON files
+- Language-aware rule selection
+- Structured API response per file and per violation
+- Easy to extend with new rules and providers
 
-* 🔍 Analyze **public GitHub pull requests**
-* 🧠 Extract and process **code diffs**
-* ⚙️ Built-in **Rule Engine** for deterministic checks
-* 📦 Clean, structured API response (UI-ready)
-* 🔌 Easily extendable for new providers (GitLab, Bitbucket, etc.)
-* 🤖 Ready for AI integration (Ollama / LLMs)
+## Tech Stack
 
----
+- Java 21
+- Spring Boot
+- Gradle
+- OpenAPI / Swagger UI
 
-## ⚠️ Current Limitations
+## How it works
 
-* Works only with **public repositories**
-* Supports **Java code only** (for rule evaluation)
-* GitHub is the only provider implemented (for now)
+1. A pull request URL is sent to the API
+2. The provider is resolved from the URL
+3. Changed files are fetched from GitHub
+4. The rule engine loads matching rules for the file language
+5. Violations are aggregated into a review response
 
----
+## API
 
-## 🏗️ Architecture Overview
+### Get review result
+`GET /api/reviews?url=<pull_request_url>`
 
-```
-PR URL → Provider Resolver → GitHub Client → Changed Files
-        → Rule Engine → Findings → Aggregated Review Response
-```
+### Example
+`curl "http://localhost:8080/api/reviews?url=https://github.com/owner/repo/pull/1"`
 
----
 
-## Quick Test
+### Example response
 
-You can test the application with this public GitHub PR:
-
-```text
-https://github.com/YordanovND/GitInsight-AI/pull/1/changes
-```
-
-Example request:
-
-```bash
-curl -X 'GET' \
-  'http://localhost:8080/api/reviews?url=https%3A%2F%2Fgithub.com%2FYordanovND%2FGitInsight-AI%2Fpull%2F1%2Fchanges' \
-  -H 'accept: */*'
-```
-
-## 🔌 Provider Extensibility
-
-Adding a new provider is straightforward:
-
-1. Implement:
-
-```java
-VisualControlsProviderClient
-```
-
-2. Add support logic:
-
-```java
-boolean supports(String url)
-```
-
-3. Register it as a Spring bean (`@Component`)
-
-That’s it — it will be auto-discovered and used via the resolver.
-
----
-
-## ⚙️ Rule Engine
-
-The rule engine performs deterministic checks on code changes.
-
-### How it works
-
-* Each file is passed through a list of rules
-* Each rule returns findings (if any)
-* Results are aggregated into a structured response
-
----
-
-### Adding a new rule
-
-1. Implement the `ReviewRule` interface:
-
-```java
-@Component
-public class MyCustomRule implements ReviewRule {
-
-    @Override
-    public String getName() {
-        return "MY_RULE";
+```json
+{
+  "pullRequestUrl": "https://github.com/owner/repo/pull/1",
+  "filesReviewed": 2,
+  "issuesFound": 1,
+  "fileResults": [
+    {
+      "fileName": "src/main/java/com/example/Demo.java",
+      "language": "JAVA",
+      "violations": [
+        {
+          "ruleId": "java-system-out",
+          "ruleName": "SYSTEM_OUT_PRINTLN",
+          "severity": "LOW",
+          "type": "CODE_SMELL",
+          "message": "Avoid using System.out.println or System.out.print in application code. Prefer structured logging."
+        }
+      ]
     }
-
-    @Override
-    public boolean supports(RuleContext context) {
-        return context.changedFile().filename().endsWith(".java");
-    }
-
-    @Override
-    public List<RuleFinding> evaluate(RuleContext context) {
-        // your logic here
-        return List.of();
-    }
+  ]
 }
 ```
 
-2. Done ✅
-   Spring will automatically pick it up and include it in the engine.
+### Rules
 
----
+Rules are defined as JSON files under:
+`src/main/resources/rules/`
 
-### Example Rules
+Each rule contains metadata such as language, severity, type, message, and matching conditions.
 
-* `System.out.println` usage
-* Generic exception catch (`catch (Exception e)`)
-* Spring field injection (`@Autowired`)
+This makes the engine easy to extend without changing the core review logic.
 
----
+### Run locally
+`./gradlew bootRun`
 
-## ▶️ Running the Project
+Or run the main application class directly from your IDE.
 
-### With Docker (recommended)
+### Project structure
+```
+src/main/java/com/example/prguardian
+├── controller
+├── client
+├── resolver
+├── service
+└── model
 
-```bash
-make build
+src/main/resources
+└── rules
 ```
 
-or
-
-```bash
-docker compose up --build
-```
-
----
-
-## 🌐 API Usage
-
-### Get review for a PR
-
-```http
-GET /api/reviews?url=<pull_request_url>
-```
-
-### Example:
-
-```text
-http://localhost:8080/api/reviews?url=https://github.com/user/repo/pull/1
-```
-
----
-
-## 📊 Response
-
-The API returns:
-
-* Summary (score, verdict)
-* Findings grouped by severity
-* Per-file analysis
-
-Designed to be directly consumed by a frontend.
-
----
-
-## 🧠 Future Improvements
-
-* AI-generated code review (LLM integration)
-* Inline GitHub comments publishing
-* GitHub App authentication
-* Support for GitLab / Bitbucket
-* Multi-language support
-
----
-
-## 💡 Why this project?
-
-This project demonstrates:
-
-* Clean architecture & extensibility
-* Integration with external APIs (GitHub)
-* Rule-based analysis engine
-* Preparation for AI-powered workflows
-
----
-
-## 🧑‍💻 Author
-
-Built as a portfolio project to showcase backend + AI integration skills.
+### Notes
+The current implementation is focused on GitHub pull requests
+Review results are based on changed code, not full repository analysis
+New languages and rules can be added incrementally
